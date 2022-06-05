@@ -59,11 +59,8 @@ public class ProdutosTest {
         new LoginPage(navegador)
                 .informarOUsuario("admin")
                 .informarASenha("admin")
-                .submetetrFormularioDeLogin();
-
-
-        // Vou para a tela de registro de produto
-        navegador.findElement(By.linkText("ADICIONAR PRODUTO")).click();
+                .submeterFormularioDeLogin()
+                .acessarFormularioAdicaoNovoProduto();
 
         // Vou preencher dados do produto e o valor sera igual a zero
         navegador.findElement(By.id("produtonome")).sendKeys("XPTO");

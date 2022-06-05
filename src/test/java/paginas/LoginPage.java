@@ -33,11 +33,10 @@ public class LoginPage {
         return this; // pq depois que eu exeuctar este metodo eu ainda continuo na mesma pagina...por isso retorno this
     }
 
-    public ListaDeProdutosPage submetetrFormularioDeLogin(){
+    public ListaDeProdutosPage submeterFormularioDeLogin(){
         navegador.findElement(By.cssSelector("button[type='submit']")).click();
 
         return new ListaDeProdutosPage(navegador);
-
     }
 
 
