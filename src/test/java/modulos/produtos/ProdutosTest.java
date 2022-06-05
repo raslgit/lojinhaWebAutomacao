@@ -3,23 +3,35 @@ package modulos.produtos;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import paginas.LoginPage;
 
 import java.time.Duration;
 
 @DisplayName("Testes Web do Modulo de produtos")
 public class ProdutosTest {
 
-    private ChromeDriver navegador;
-    //private FirefoxDriver navegador;
+    private WebDriver navegador;
+
+    // para uso do WebdriverManager
+/*    private ChromeDriver navegador;
+    //private FirefoxDriver navegador;*/
 
     @BeforeEach
     public void beforeEach(){
+        // Abrir o navegador
+
+        //System.setProperty("webdriver.chrome.diver", "C:\\Drivers\\chromedriver_win32\\chromedriver.exe");
+        //this.navegador = new ChromeDriver();
+
+
         WebDriverManager.chromedriver().setup();
         //WebDriverManager.firefoxdriver().setup();
         this.navegador = new ChromeDriver();
         //this.navegador = new FirefoxDriver();
+
 
         // vou maximizar a tela
         this.navegador.manage().window().maximize();
@@ -43,17 +55,11 @@ public class ProdutosTest {
     @Test
     @DisplayName("Nao e permitido registrar um produto com valor igual a zero")
     public void testNaoEPermitidoRegistrarProdutosComValorIgualAZero() {
-        // Abrir o navegador
-
-
         // Fazer login
-        navegador.findElement(By.cssSelector("label[for='usuario']")).click();
-        navegador.findElement(By.id("usuario")).sendKeys("admin");
-
-        navegador.findElement(By.cssSelector("label[for='senha']")).click();
-        navegador.findElement(By.id("senha")).sendKeys("admin");
-
-        navegador.findElement(By.cssSelector("button[type='submit']")).click();
+        new LoginPage(navegador)
+                .informarOUsuario("admin")
+                .informarASenha("admin")
+                .submetetrFormularioDeLogin();
 
 
         // Vou para a tela de registro de produto
