@@ -19,4 +19,11 @@ public class ListaDeProdutosPage {
 
         return new FormulariodDeAdicaoDeProdutoPage(navegador);
     }
+
+    // Neste caso aqui, eu vou retornar a mensagem capturada
+    public String capturarMensagemApresentada() {
+        // Vou validar que a mensagem de erro foi apresentada
+        String mensagemToast = navegador.findElement(By.cssSelector(".toast.rounded")).getText();
+        return mensagemToast;
+    }
 }

@@ -56,26 +56,88 @@ public class ProdutosTest {
     @DisplayName("Nao e permitido registrar um produto com valor igual a zero")
     public void testNaoEPermitidoRegistrarProdutosComValorIgualAZero() {
         // Fazer login
-        new LoginPage(navegador)
+        String mensagemApresentada = new LoginPage(navegador)
                 .informarOUsuario("admin")
                 .informarASenha("admin")
                 .submeterFormularioDeLogin()
-                .acessarFormularioAdicaoNovoProduto();
+                .acessarFormularioAdicaoNovoProduto()
+                .informarNomeDoProduto("Televisão Samsung")
+                .informarValorDoProduto("0")
+                .informarCoresDoProduto("Preto, Branco")
+                .submeterFormularioDeAdicaoComErro()
+                .capturarMensagemApresentada();
 
-        // Vou preencher dados do produto e o valor sera igual a zero
-        navegador.findElement(By.id("produtonome")).sendKeys("XPTO");
-        navegador.findElement(By.id("produtovalor")).sendKeys("0");
-        navegador.findElement(By.id("produtocores")).sendKeys("Verde, Rosa");
-
-        // Vou submeter o formulario
-        navegador.findElement(By.cssSelector("button[type='submit']")).click();
-
-        // Vou validar que a mensagem de erro foi apresentada
-        String mensagemToast = navegador.findElement(By.cssSelector(".toast.rounded")).getText();
-        Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemToast);
-
+        Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemApresentada);
 
     }
 
+    @Test
+    @DisplayName("Nao e permitido registrar um produto com valor maior que 7.000")
+    public void testNaoEPermitidoRegistrarProdutosComValorMaiorQue7000() {
+        String mensagemApresentada = new LoginPage(navegador)
+                .informarOUsuario("admin")
+                .informarASenha("admin")
+                .submeterFormularioDeLogin()
+                .acessarFormularioAdicaoNovoProduto()
+                .informarNomeDoProduto("Televisão Samsung")
+                .informarValorDoProduto("700010")
+                .informarCoresDoProduto("Preto, Branco")
+                .submeterFormularioDeAdicaoComErro()
+                .capturarMensagemApresentada();
+
+        Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemApresentada);
+
+    }
+
+    @Test
+    @DisplayName("Posso adicionar produtos que estejam na faixa de 0,01 ateh 7.000,00")
+    public void testPossoAdicionarProdutosComValorDeUmCentavoASeteMilReais(){
+        String mensagemApresentada = new LoginPage((navegador))
+                .informarOUsuario("admin")
+                .informarASenha("admin")
+                .submeterFormularioDeLogin()
+                .acessarFormularioAdicaoNovoProduto()
+                .informarNomeDoProduto("TV Sony")
+                .informarValorDoProduto("599999")
+                .informarCoresDoProduto("Cinza, preto")
+                .submeterFormularioDeAdicaoComSucesso()
+                .capturarMensagemApresentada();
+
+        Assertions.assertEquals("Produto adicionado com sucesso", mensagemApresentada);
+    }
+
+    @Test
+    @DisplayName("Posso adicionar produtos que estejam no limite de 0,01")
+    public void testPossoAdicionarProdutosComValorDeUmCentavo(){
+        String mensagemApresentada = new LoginPage((navegador))
+                .informarOUsuario("admin")
+                .informarASenha("admin")
+                .submeterFormularioDeLogin()
+                .acessarFormularioAdicaoNovoProduto()
+                .informarNomeDoProduto("TV Sony")
+                .informarValorDoProduto("001")
+                .informarCoresDoProduto("Cinza, preto")
+                .submeterFormularioDeAdicaoComSucesso()
+                .capturarMensagemApresentada();
+
+        Assertions.assertEquals("Produto adicionado com sucesso", mensagemApresentada);
+    }
+
+    @Test
+    @DisplayName("Posso adicionar produtos que estejam no limite de 7000")
+    public void testPossoAdicionarProdutosComValorDeSeteMilReais(){
+        String mensagemApresentada = new LoginPage((navegador))
+                .informarOUsuario("admin")
+                .informarASenha("admin")
+                .submeterFormularioDeLogin()
+                .acessarFormularioAdicaoNovoProduto()
+                .informarNomeDoProduto("TV Sony")
+                .informarValorDoProduto("700000")
+                .informarCoresDoProduto("Cinza, preto")
+                .submeterFormularioDeAdicaoComSucesso()
+                .capturarMensagemApresentada();
+
+        Assertions.assertEquals("Produto adicionado com sucesso", mensagemApresentada);
+    }
 
 }
